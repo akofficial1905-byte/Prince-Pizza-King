@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Prince Pizza King — Order Now</title>
+<title>Prince Pizza King — Digital Menu</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --red:#d90429;
-  --dark:#111;
-  --card:#1c1c1c;
-  --accent:#ffb703;
-  --text:#f8f8f8;
+  --bg:#050505;
+  --paper:#1a0909;
+  --accent:#d90429;
+  --accent-soft:#ffb703;
+  --text:#f5f5f5;
 }
 *{box-sizing:border-box}
 body{
@@ -21,90 +21,128 @@ body{
   background:radial-gradient(circle at top,#3a0d0d 0,#050505 55%);
   color:var(--text);
   font-family:Poppins,sans-serif;
+  overflow:hidden;
 }
 
-/* HEADER */
-header{
-  padding:14px 16px 8px;
+/* BOOK */
+#viewport{width:100vw;height:100vh;overflow:hidden}
+#book{display:flex;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.page{
+  min-width:100vw;
+  height:100vh;
+  padding:18px 14px 130px;
+  background:
+    radial-gradient(circle at center, rgba(217,4,41,.08), transparent 60%),
+    linear-gradient(160deg,#140303,#1a0909);
+  position:relative;
+}
+.page::before{
+  content:"PRINCE PIZZA KING";
+  position:absolute;inset:0;
+  display:flex;justify-content:center;align-items:center;
+  font-family:"Playfair Display",serif;
+  font-size:3.2rem;
+  color:rgba(255,255,255,.03);
+  pointer-events:none;
+}
+
+/* HEADINGS */
+h1,h2{
+  font-family:"Playfair Display",serif;
+  color:var(--accent-soft);
+  margin-bottom:10px;
+}
+h1{font-size:2.4rem}
+h2{font-size:1.4rem}
+
+.center{
+  height:100%;
   display:flex;
-  justify-content:space-between;
+  flex-direction:column;
+  justify-content:center;
   align-items:center;
-}
-.brand-left{
-  font-size:.65rem;
-  color:#ddd;
-  line-height:1.3;
-}
-.brand-left span{
-  color:var(--accent);
-  font-weight:600;
-}
-.logo{
   text-align:center;
-  flex:1;
-}
-.logo-line1{
-  font-family:"Playfair Display",serif;
-  font-size:1.2rem;
-  color:#fff;
-  letter-spacing:.08em;
-}
-.logo-line2{
-  font-family:"Playfair Display",serif;
-  font-size:1.5rem;
-  color:var(--red);
-  letter-spacing:.2em;
-}
-.call-right{
-  font-size:.7rem;
-  text-align:right;
-}
-.call-right b{color:var(--accent)}
-
-/* MENU WRAPPER */
-#menuWrapper{
-  padding:6px 12px 90px;
 }
 
-/* CATEGORY TITLE */
-.cat-title{
-  margin:18px 4px 10px;
-  font-size:1.1rem;
-  font-weight:600;
+/* NAV ARROWS */
+.nav{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:26px;
   color:var(--accent);
+  cursor:pointer;
+  z-index:20;
+  opacity:.75;
+}
+.nav:hover{opacity:1}
+#prev{left:6px}
+#next{right:6px}
+
+/* PAGE NO */
+.pageNo{
+  position:absolute;
+  bottom:14px;
+  right:16px;
+  font-size:.7rem;
+  color:#aaa;
 }
 
-/* ITEMS GRID */
+/* CONTENTS */
+#contentsBtn{
+  position:fixed;
+  top:12px;
+  right:12px;
+  background:#2a1515;
+  color:var(--accent-soft);
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:.9rem;
+  z-index:30;
+  border:1px solid var(--accent);
+}
+
+/* CONTENTS GRID */
+.contents-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  max-width:440px;
+}
+.contents-card{
+  background:#1c0f0f;
+  padding:16px;
+  border-radius:16px;
+  font-weight:600;
+  text-align:center;
+  cursor:pointer;
+  border:1px solid rgba(217,4,41,.7);
+  color:var(--text);
+}
+
+/* ITEMS */
 .items-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
 }
 @media(min-width:600px){
-  .items-grid{grid-template-columns:repeat(3,1fr);}
+  .items-grid{grid-template-columns:repeat(3,1fr)}
 }
 .item{
-  background:var(--card);
+  background:#1c0f0f;
   border-radius:14px;
   padding:10px;
-  font-size:.78rem;
-  border:1px solid rgba(255,255,255,.08);
+  font-size:.8rem;
+  border:1px solid rgba(217,4,41,.4);
 }
-.item b{
-  display:block;
-  font-size:.9rem;
-  margin-bottom:2px;
-}
-.price{
-  font-size:.75rem;
-  color:var(--accent);
-  margin-bottom:6px;
-}
+.item b{display:block;font-size:.9rem;margin-bottom:4px;color:#ffffff}
+.price{font-size:.75rem;color:var(--accent-soft);margin-bottom:6px}
 select{
   width:100%;
   padding:7px;
   border-radius:8px;
-  border:1px solid rgba(255,255,255,.3);
+  border:1px solid rgba(217,4,41,.6);
   font-size:.75rem;
   margin-bottom:6px;
   background:#050505;
@@ -115,50 +153,48 @@ select{
   padding:7px;
   border-radius:18px;
   border:none;
-  background:var(--red);
+  background:var(--accent);
   font-weight:600;
   font-size:.78rem;
   color:#fff;
 }
 
-/* CART BAR */
+/* FOOTER CART BAR */
 #cartBar{
   position:fixed;
   bottom:0;left:0;right:0;
   background:#000;
-  border-top:2px solid var(--red);
+  border-top:2px solid var(--accent);
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:8px 14px;
+  padding:10px 14px;
   z-index:40;
 }
-#cartSummary{font-weight:600;font-size:.85rem;}
+#cartSummary{font-weight:600}
 #checkoutBtn{
-  background:var(--red);
+  background:var(--accent);
   color:#fff;
-  padding:9px 16px;
+  padding:10px 18px;
   border-radius:22px;
   font-weight:700;
   border:none;
-  font-size:.8rem;
 }
 
 /* CART MODAL */
 #cartModal{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   background:rgba(0,0,0,.78);
   display:none;
   z-index:50;
 }
 #cartBox{
   background:#151515;
-  width:94%;
-  max-width:480px;
-  max-height:90vh;
-  margin:20px auto;
-  padding:16px;
+  width:92%;
+  max-width:460px;
+  max-height:88vh;
+  margin:30px auto;
+  padding:18px;
   border-radius:18px;
   display:flex;
   flex-direction:column;
@@ -166,15 +202,12 @@ select{
 }
 #cartBox h3{
   margin-top:0;
-  color:var(--accent);
+  color:var(--accent-soft);
 }
 #cartItems{flex:1;overflow:auto;margin-bottom:10px}
 .cart-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:8px;
-  font-size:.83rem;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;font-size:.85rem;
 }
 .cart-row small{color:#ccc}
 .qty button{
@@ -182,31 +215,27 @@ select{
   padding:4px 8px;border-radius:6px;margin:0 4px;
 }
 
-/* FORM */
-input,select.orderType,select.paymentMethod,textarea{
+/* INPUTS */
+input,select#orderType,textarea#address,select#paymentMethod{
   width:100%;
-  padding:9px;
-  border-radius:9px;
+  padding:10px;
+  border-radius:10px;
   border:1px solid rgba(255,255,255,.3);
-  margin-bottom:7px;
-  font-size:.85rem;
+  margin-bottom:8px;
+  font-size:.9rem;
   background:#050505;
   color:#fff;
 }
-textarea{resize:vertical;min-height:60px;}
+textarea#address{resize:vertical;min-height:60px;}
 
 .primary{
-  background:var(--red);
-  border:none;
-  padding:11px;
-  border-radius:26px;
-  font-weight:700;
-  width:100%;
+  background:var(--accent);
+  border:none;padding:12px;border-radius:26px;
+  font-weight:700;width:100%;
   color:#fff;
-  font-size:.9rem;
 }
 
-/* Payment / location helper */
+/* helper text */
 .helper{
   font-size:.72rem;
   color:#ccc;
@@ -216,7 +245,7 @@ textarea{resize:vertical;min-height:60px;}
 /* location button */
 .loc-btn{
   background:#222;
-  color:var(--accent);
+  color:var(--accent-soft);
   border:1px solid rgba(255,255,255,.25);
   padding:6px 10px;
   border-radius:999px;
@@ -227,40 +256,41 @@ textarea{resize:vertical;min-height:60px;}
 /* TOAST */
 #toast{
   position:fixed;
-  bottom:80px;
+  bottom:90px;
   left:50%;
   transform:translateX(-50%);
   background:#222;
-  color:var(--accent);
-  padding:8px 16px;
-  border-radius:18px;
+  color:var(--accent-soft);
+  padding:10px 18px;
+  border-radius:20px;
   font-size:.8rem;
   display:none;
   z-index:60;
+}
+
+/* SWIPE HINT */
+#hint{
+  position:fixed;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.7);
+  color:#fff;
+  padding:8px 14px;
+  border-radius:18px;
+  font-size:.75rem;
+  z-index:70;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="brand-left">
-    <div>Powered by <span>Aryvo</span></div>
-    <div>📞 7054699905</div>
-  </div>
-  <div class="logo">
-    <div class="logo-line1">PRINCE</div>
-    <div class="logo-line2">PIZZA KING</div>
-  </div>
-  <div class="call-right">
-    <div>Order Helpline</div>
-    <div><b>+91-XXXXXXXXXX</b></div>
-  </div>
-</header>
+<div id="viewport"><div id="book"></div></div>
 
-<div id="menuWrapper">
-  <div id="menu"></div>
-</div>
+<div id="prev" class="nav">❮</div>
+<div id="next" class="nav">❯</div>
+<button id="contentsBtn" onclick="go(1)">📑 Menu</button>
 
 <div id="cartBar">
   <div id="cartSummary">🛒 0 items | ₹0</div>
@@ -271,11 +301,11 @@ textarea{resize:vertical;min-height:60px;}
   <div id="cartBox">
     <h3>Your Order</h3>
     <div id="cartItems"></div>
-    <b style="font-size:.9rem;">Total: ₹<span id="total">0</span></b>
+    <b>Total: ₹<span id="total">0</span></b>
 
     <hr style="margin:10px 0;border-color:#333;">
 
-    <select id="orderType" class="orderType">
+    <select id="orderType">
       <option value="">Select Order Type</option>
       <option value="dinein">Dine-in</option>
       <option value="takeaway">Takeaway</option>
@@ -291,7 +321,7 @@ textarea{resize:vertical;min-height:60px;}
     <button id="locBtn" class="loc-btn">📍 Use current location</button>
     <div id="locStatus" class="helper"></div>
 
-    <select id="paymentMethod" class="paymentMethod">
+    <select id="paymentMethod">
       <option value="">Select Payment Method</option>
       <option value="UPI">UPI (Scan QR)</option>
       <option value="COD">Cash on Delivery</option>
@@ -306,106 +336,237 @@ textarea{resize:vertical;min-height:60px;}
 </div>
 
 <div id="toast"></div>
+<div id="hint">Swipe or use arrows to browse menu</div>
 
 <script>
-// Basic toast
+setTimeout(()=>document.getElementById("hint").style.display="none",5000);
+
+const book=document.getElementById("book");
+const cartSummary=document.getElementById("cartSummary");
+const cartModal=document.getElementById("cartModal");
+const cartItemsDiv=document.getElementById("cartItems");
+const totalSpan=document.getElementById("total");
+const checkoutBtn=document.getElementById("checkoutBtn");
+const placeOrderBtn=document.getElementById("placeOrderBtn");
+
+const regInput=document.getElementById("regno");
+const nameInput=document.getElementById("name");
+const mobileInput=document.getElementById("mobile");
+const addressInput=document.getElementById("address");
+const orderTypeSel=document.getElementById("orderType");
+const paymentSel=document.getElementById("paymentMethod");
+const locBtn=document.getElementById("locBtn");
+const locStatus=document.getElementById("locStatus");
+
+let cart=[],page=0,locked=false,menu={};
+let customerLocation=null;
+
+/* NAV */
+function go(i){
+  locked=true;page=i;
+  book.style.transform=`translateX(-${i*100}vw)`;
+  setTimeout(()=>locked=false,600);
+}
+document.getElementById("prev").onclick=()=>page>0&&go(page-1);
+document.getElementById("next").onclick=()=>page<book.children.length-1&&go(page+1);
+
+/* SWIPE */
+let sx=0;
+document.addEventListener("touchstart",e=>sx=e.touches[0].clientX);
+document.addEventListener("touchend",e=>{
+  if(locked)return;
+  let dx=e.changedTouches[0].clientX-sx;
+  if(dx>80)document.getElementById("prev").onclick();
+  if(dx<-80)document.getElementById("next").onclick();
+});
+
+/* CART OPEN */
+checkoutBtn.onclick=()=>{
+  if(cart.length===0){
+    toast("Cart is empty");
+    return;
+  }
+  cartModal.style.display="block";
+};
+function closeCart(){cartModal.style.display="none"}
+
+/* TOAST */
 function toast(msg){
   const t=document.getElementById("toast");
   t.innerText=msg;
   t.style.display="block";
-  setTimeout(()=>t.style.display="none",1500);
+  setTimeout(()=>t.style.display="none",1400);
 }
 
-// MENU + CART
-const menuDiv      = document.getElementById("menu");
-const cartSummary  = document.getElementById("cartSummary");
-const cartModal    = document.getElementById("cartModal");
-const cartItemsDiv = document.getElementById("cartItems");
-const totalSpan    = document.getElementById("total");
-const checkoutBtn  = document.getElementById("checkoutBtn");
-const placeOrderBtn= document.getElementById("placeOrderBtn");
-
-const regInput     = document.getElementById("regno");
-const nameInput    = document.getElementById("name");
-const mobileInput  = document.getElementById("mobile");
-const addressInput = document.getElementById("address");
-const orderTypeSel = document.getElementById("orderType");
-const paymentSel   = document.getElementById("paymentMethod");
-const locBtn       = document.getElementById("locBtn");
-const locStatus    = document.getElementById("locStatus");
-
-let cart = [];
-let menu = {};
-let customerLocation = null; // {lat,lng}
-
-// Load menu.json
-fetch("/menu.json?_=" + Date.now(), { cache:"no-store" })
+/* MENU */
+fetch("/menu.json?_=" + Date.now(), { cache: "no-store" })
   .then(r=>r.json())
-  .then(m=>{
-    menu=m;
-    buildMenu();
-  })
+  .then(m=>{menu=m;build();})
   .catch(()=>toast("Could not load menu"));
 
-// Build menu UI
-function buildMenu(){
-  menuDiv.innerHTML="";
-  Object.entries(menu).forEach(([cat, items])=>{
-    const catTitle = document.createElement("div");
-    catTitle.className="cat-title";
-    catTitle.textContent=cat;
-    menuDiv.appendChild(catTitle);
+/* BUILD PAGES */
+function build(){
+  book.innerHTML="";
 
-    const grid = document.createElement("div");
-    grid.className="items-grid";
+  /* FIRST PAGE – PRINCE PIZZA KING COVER */
+  book.innerHTML+=`
+  <section class="page">
+    <div style="
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;
+      justify-content:center;align-items:center;
+      text-align:center;
+    ">
 
-    items.forEach(it=>{
-      const inStock = it.available !== false;
-      const min = Math.min(...Object.values(it.variants || {}));
-      let opts = `<option value="">Choose option</option>`;
-      Object.entries(it.variants || {}).forEach(([name,price])=>{
-        opts += `<option value="${price}">${name} — ₹${price}</option>`;
-      });
+      <div style="
+        position:absolute;
+        top:12px;
+        left:12px;
+        text-align:left;
+        font-size:0.7rem;
+        line-height:1.3;
+        color:#cccccc;
+        font-family:'Poppins',sans-serif;
+      ">
+        <div>Powered by <span style="font-weight:700;color:#ffb703;">Aryvo</span></div>
+        <div>📞 7054699905</div>
+      </div>
 
-      const div = document.createElement("div");
-      div.className="item";
+      <div style="
+        font-family:'Poppins',sans-serif;
+        color:#ffffff;
+        letter-spacing:0.35em;
+        font-size:0.8rem;
+        margin-bottom:10px;
+      ">
+        WELCOME TO
+      </div>
 
-      div.innerHTML = `
-        <b>${it.name}</b>
-        <div class="price">From ₹${min}</div>
-        ${
-          inStock
-          ? `<select>${opts}</select>
-             <button class="add">Add</button>`
-          : `<div style="margin-top:6px;font-size:0.8rem;color:#ffb3b3;font-weight:600;">Sold out</div>
-             <select disabled><option>Choose option</option></select>
-             <button class="add" disabled style="background:#444;color:#888;">Sold out</button>`
-        }
-      `;
+      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:12px;">
+        <span style="
+          font-family:'Playfair Display',serif;
+          font-weight:800;
+          font-size:2.6rem;
+          letter-spacing:0.18em;
+          color:#ffffff;
+        ">PRINCE</span>
+        <span style="
+          font-family:'Playfair Display',serif;
+          font-weight:900;
+          font-size:2.3rem;
+          letter-spacing:0.32em;
+          color:#d90429;
+        ">PIZZA</span>
+        <span style="
+          font-family:'Playfair Display',serif;
+          font-weight:900;
+          font-size:1.9rem;
+          letter-spacing:0.28em;
+          color:#ffffff;
+        ">KING</span>
+      </div>
 
-      if (inStock) {
-        const sel = div.querySelector("select");
-        const btn = div.querySelector("button.add");
-        btn.onclick = () => addToCart(it.name, sel);
-      }
+      <div style="
+        font-family:'Poppins',sans-serif;
+        font-size:0.75rem;
+        letter-spacing:0.18em;
+        text-transform:uppercase;
+        color:#f5f5f5;
+        margin-bottom:16px;
+      ">
+        HOT PIZZAS • SIDES • DRINKS
+      </div>
 
-      grid.appendChild(div);
-    });
+      <div style="font-size:0.9rem;margin-bottom:10px;">
+        📞 +91-XXXXXXXXXX
+      </div>
+      <button class="primary" style="background:#d90429;color:#fff;" onclick="go(1)">Open Menu</button>
+    </div>
+  </section>`;
 
-    menuDiv.appendChild(grid);
+  /* CONTENTS PAGE */
+  let contents="",start=2;
+  Object.keys(menu).forEach(c=>{
+    const items = menu[c];
+    const hasImages = items.some(it => it.image);
+    const perPage   = hasImages
+      ? (window.innerWidth < 500 ? 4 : 6)
+      : (window.innerWidth < 500 ? 6 : 8);
+    const pagesForCat = Math.ceil(items.length / perPage);
+
+    contents+=`<div class="contents-card" onclick="go(${start})">${c}</div>`;
+    start+=pagesForCat;
   });
+
+  book.innerHTML+=`
+  <section class="page center">
+    <h2>Menu</h2>
+    <div class="contents-grid">${contents}</div>
+    <div class="pageNo">2</div>
+  </section>`;
+
+  /* CATEGORY PAGES */
+  let pg=3;
+  for (let [cat, items] of Object.entries(menu)) {
+
+    const hasImages = items.some(it => it.image);
+    const perPage   = hasImages
+      ? (window.innerWidth < 500 ? 4 : 6)
+      : (window.innerWidth < 500 ? 6 : 8);
+
+    for (let i = 0; i < items.length; i += perPage) {
+      let slice = items.slice(i, i + perPage);
+      let html = `<h2>${i === 0 ? cat : cat + " (Continued)"}</h2><div class="items-grid">`;
+      slice.forEach(it => {
+        const min = Math.min(...Object.values(it.variants));
+        const img = it.image || "";
+        const inStock = it.available !== false;
+
+        let opts = `<option value="">Choose option</option>` +
+          Object.entries(it.variants)
+            .map(v => `<option value="${v[1]}">${v[0]} — ₹${v[1]}</option>`)
+            .join("");
+
+        html += `
+        <div class="item">
+          ${img ? `<div style="width:100%;height:90px;margin-bottom:6px;overflow:hidden;border-radius:10px;">
+                     <img src="${img}" alt="${it.name}" style="width:100%;height:100%;object-fit:cover;">
+                   </div>` : ``}
+          <b>${it.name}</b>
+          <div class="price">From ₹${min}</div>
+          ${
+            inStock
+              ? `
+                <select>${opts}</select>
+                <button class="add" onclick="add('${it.name}',this)">Add</button>
+              `
+              : `
+                <div style="margin-top:6px;font-size:0.85rem;color:#ffb3b3;font-weight:600;">
+                  Sold out
+                </div>
+                <select disabled style="opacity:0.5;">
+                  <option>Choose option</option>
+                </select>
+                <button class="add" disabled style="background:#444;color:#888;">Sold out</button>
+              `
+          }
+        </div>`;
+      });
+      html += `</div>`;
+      book.innerHTML += `<section class="page">${html}<div class="pageNo">${pg++}</div></section>`;
+    }
+  }
 }
 
-function addToCart(name, sel){
-  if(!sel.value){
-    alert("Please choose an option");
-    return;
-  }
-  const price  = +sel.value;
-  const variant= sel.options[sel.selectedIndex].text.split(" — ")[0];
+/* CART LOGIC */
+function add(name,btn){
+  const sel=btn.previousElementSibling;
+  if(!sel.value){alert("Please choose an option");return;}
+  const price=+sel.value;
+  const variant=sel.options[sel.selectedIndex].text.split(" — ")[0];
 
-  let existing = cart.find(i=>i.name===name && i.variant===variant && i.price===price);
-  if(existing) existing.qty++;
+  let f=cart.find(i=>i.name===name&&i.price===price&&i.variant===variant);
+  if(f)f.qty++;
   else cart.push({name,variant,price,qty:1});
 
   toast(`${name} (${variant}) added`);
@@ -417,42 +578,29 @@ function updateCart(){
   let total=0;
   cart.forEach((i,idx)=>{
     total+=i.qty*i.price;
-    cartItemsDiv.innerHTML += `
-      <div class="cart-row">
-        <div>
-          ${i.name} <small>(${i.variant})</small><br>
-          ₹${i.price}
-        </div>
-        <div class="qty">
-          <button onclick="changeQty(${idx},-1)">−</button>
-          ${i.qty}
-          <button onclick="changeQty(${idx},1)">+</button>
-        </div>
+    cartItemsDiv.innerHTML+=`
+    <div class="cart-row">
+      <div>
+        ${i.name} <small>(${i.variant})</small><br>
+        ₹${i.price}
       </div>
-    `;
+      <div class="qty">
+        <button onclick="chg(${idx},-1)">−</button>
+        ${i.qty}
+        <button onclick="chg(${idx},1)">+</button>
+      </div>
+    </div>`;
   });
-  totalSpan.textContent = total;
-  const itemsCount = cart.reduce((s,i)=>s+i.qty,0);
-  cartSummary.textContent = `🛒 ${itemsCount} items | ₹${total}`;
+  totalSpan.innerText=total;
+  cartSummary.innerText=`🛒 ${cart.reduce((s,i)=>s+i.qty,0)} items | ₹${total}`;
 }
-
-function changeQty(i,d){
-  cart[i].qty += d;
-  if(cart[i].qty<=0) cart.splice(i,1);
+function chg(i,d){
+  cart[i].qty+=d;
+  if(cart[i].qty<=0)cart.splice(i,1);
   updateCart();
 }
 
-// Cart open/close
-checkoutBtn.onclick = () => {
-  if(cart.length===0){
-    toast("Cart is empty");
-    return;
-  }
-  cartModal.style.display="block";
-};
-function closeCart(){ cartModal.style.display="none"; }
-
-// Location button
+/* LOCATION */
 locBtn.onclick = () => {
   if(!navigator.geolocation){
     locStatus.textContent = "Geolocation not supported on this device.";
@@ -475,75 +623,7 @@ locBtn.onclick = () => {
   );
 };
 
-// Place order (no Razorpay)
-let submitting = false;
-placeOrderBtn.onclick = async () => {
-  if(submitting) return;
-  if(cart.length===0) return alert("Cart is empty");
-
-  const orderType = orderTypeSel.value;
-  if(!orderType) return alert("Select order type");
-  if(!nameInput.value.trim()) return alert("Enter your name");
-  if(!mobileInput.value.trim()) return alert("Enter mobile number");
-
-  // For delivery, recommend address
-  if(orderType === "delivery" && !addressInput.value.trim()){
-    return alert("Enter delivery address / hostel / block");
-  }
-
-  const paymentMethod = paymentSel.value;
-  if(!paymentMethod) return alert("Select payment method (UPI or COD)");
-
-  const totalAmount = cart.reduce((s,i)=>s + i.qty*i.price,0);
-
-  const payload = {
-    orderType,
-    customerName: nameInput.value.trim(),
-    registrationNumber: regInput.value.trim(),
-    mobile: mobileInput.value.trim(),
-    tableNumber: orderType === "dinein" ? (regInput.value.trim() || "") : "",
-    address: addressInput.value.trim(),
-    location: customerLocation,          // {lat,lng} or null
-    items: cart,
-    paymentMethod
-  };
-
-  submitting = true;
-  placeOrderBtn.textContent = "Placing order…";
-
-  try{
-    const res = await fetch("/api/orders",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload)
-    });
-    if(!res.ok){
-      alert("Could not place order. Please try again.");
-      submitting=false;
-      placeOrderBtn.textContent="Place Order";
-      return;
-    }
-    const data = await res.json();
-    if(!data.success){
-      alert("Order failed. Please try again.");
-      submitting=false;
-      placeOrderBtn.textContent="Place Order";
-      return;
-    }
-
-    // success
-    submitting=false;
-    placeOrderBtn.textContent="Place Order";
-    showSuccessAndReset(totalAmount, paymentMethod);
-  }catch(e){
-    console.error(e);
-    alert("Server error. Please try again.");
-    submitting=false;
-    placeOrderBtn.textContent="Place Order";
-  }
-};
-
-// Simple success overlay
+/* SIMPLE SUCCESS OVERLAY */
 function showSuccessAndReset(total, paymentMethod){
   const overlay=document.createElement("div");
   overlay.style.position="fixed";
@@ -566,7 +646,7 @@ function showSuccessAndReset(total, paymentMethod){
       font-family:Poppins,sans-serif;
       color:#f5f5f5;
     ">
-      <h3 style="margin-top:0;color:var(--accent);">Order placed</h3>
+      <h3 style="margin-top:0;color:var(--accent-soft);">Order placed</h3>
       <p style="font-size:.9rem;margin:8px 0 10px;">
         Your order has been sent to Prince Pizza King.
       </p>
@@ -577,7 +657,7 @@ function showSuccessAndReset(total, paymentMethod){
         Payment method: <b>${paymentMethod}</b>
       </div>
       <button id="successDoneBtn" style="
-        background:var(--red);
+        background:var(--accent);
         border:none;
         padding:9px 16px;
         border-radius:22px;
@@ -596,7 +676,6 @@ function showSuccessAndReset(total, paymentMethod){
     cart=[];
     updateCart();
     closeCart();
-    // reset fields
     orderTypeSel.value="";
     regInput.value="";
     nameInput.value="";
@@ -605,10 +684,75 @@ function showSuccessAndReset(total, paymentMethod){
     paymentSel.value="";
     customerLocation=null;
     locStatus.textContent="";
+    go(0);
   };
 }
+
+/* PLACE ORDER (no Razorpay, use /api/orders of Prince Pizza King server) */
+let submitting=false;
+placeOrderBtn.onclick = async () => {
+  if(submitting)return;
+  if(cart.length===0)return alert("Cart empty");
+
+  const orderType = orderTypeSel.value;
+  if(!orderType) return alert("Select order type");
+  if(!nameInput.value.trim()) return alert("Enter name");
+  if(!mobileInput.value.trim()) return alert("Enter mobile");
+
+  if(orderType === "delivery" && !addressInput.value.trim()){
+    return alert("Enter delivery address / hostel / block");
+  }
+
+  const paymentMethod = paymentSel.value;
+  if(!paymentMethod) return alert("Select payment method (UPI or COD)");
+
+  const totalAmount = cart.reduce((s,i)=>s + i.qty*i.price,0);
+
+  const payload = {
+    orderType,
+    customerName:nameInput.value.trim(),
+    registrationNumber:regInput.value.trim(),
+    mobile:mobileInput.value.trim(),
+    tableNumber: orderType==="dinein" ? (regInput.value.trim() || "") : "",
+    address:addressInput.value.trim(),
+    location:customerLocation,
+    items:cart,
+    paymentMethod
+  };
+
+  submitting=true;
+  placeOrderBtn.innerText="Placing order…";
+
+  try{
+    const res = await fetch("/api/orders",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok){
+      alert("Could not place order. Please try again.");
+      submitting=false;
+      placeOrderBtn.innerText="Place Order";
+      return;
+    }
+    const data = await res.json();
+    if(!data.success){
+      alert("Order failed. Please try again.");
+      submitting=false;
+      placeOrderBtn.innerText="Place Order";
+      return;
+    }
+    submitting=false;
+    placeOrderBtn.innerText="Place Order";
+    showSuccessAndReset(totalAmount, paymentMethod);
+  }catch(e){
+    console.error(e);
+    alert("Server error. Please try again.");
+    submitting=false;
+    placeOrderBtn.innerText="Place Order";
+  }
+};
 </script>
 
 </body>
 </html>
-
