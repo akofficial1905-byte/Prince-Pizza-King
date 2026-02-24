@@ -1,0 +1,119 @@
+{
+  "Veg Pizza": [
+    { "name": "Margarita", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Capsicum", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Tomato", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Onion", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Corn", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Paradise Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Filling Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Mushroom Onion Olives", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Spring Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Pani Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Spicy Capsicum", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Regan Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Paneer Onion Capsicum", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Mexican Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Deluxe Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Mushroom Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Overloaded Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Top Top Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Capsicum Paneer Onion", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Basmati Paneer", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Capsicum Paneer Corn", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Paneer Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Red Paradise", "variants": { "S": 0, "M": 0, "L": 0 } }
+  ],
+
+  "Non-Veg Pizza": [
+    { "name": "BBQ Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Masala Chicken Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Peri-Peri Chicken Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Sausage Chicken Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Steam Chicken", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Delight", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Salami Sausage", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Non-Veg Supreme", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Masala Salami Sausage", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Afgani", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "BBQ Chicken Corn", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Spicy Fusion", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Red Paprika", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Supreme", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Pepper Chicken", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chilly Chicken", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken House", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Mexican Chicken", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Tandoori", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Double Feast", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Pepper Masala", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Chicken Popcorn", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Chicken Crispy", "variants": { "Half": 0, "Full": 0 } }
+  ],
+
+  "Burger": [
+    { "name": "Patty Burger", "variants": { "Regular": 0 } },
+    { "name": "Egg Burger", "variants": { "Regular": 0 } },
+    { "name": "Veg Burger", "variants": { "Regular": 0 } },
+    { "name": "Chicken Burger", "variants": { "Regular": 0 } }
+  ],
+
+  "Fries": [
+    { "name": "French Fries", "variants": { "Regular": 0 } },
+    { "name": "Peri-Peri Fries", "variants": { "Regular": 0 } }
+  ],
+
+  "Rice Items": [
+    { "name": "Rajma Rice", "variants": { "Regular": 0 } },
+    { "name": "Kadhai Rice", "variants": { "Regular": 0 } },
+    { "name": "Veg Fried Rice", "variants": { "Regular": 0 } },
+    { "name": "Chicken Fried Rice", "variants": { "Regular": 0 } },
+    { "name": "Mix Chicken Fried Rice", "variants": { "Regular": 0 } }
+  ],
+
+  "Pasta": [
+    { "name": "French Fries Pasta", "variants": { "Regular": 0 } },
+    { "name": "Red Sauce Pasta", "variants": { "Regular": 0 } },
+    { "name": "White Sauce Pasta", "variants": { "Regular": 0 } },
+    { "name": "Chicken Pasta", "variants": { "Regular": 0 } }
+  ],
+
+  "Noodles": [
+    { "name": "Veg Noodles", "variants": { "Regular": 0 } },
+    { "name": "Egg Noodles", "variants": { "Regular": 0 } },
+    { "name": "Chicken Noodles", "variants": { "Regular": 0 } }
+  ],
+
+  "Sandwich": [
+    { "name": "Veggi Sandwich", "variants": { "Regular": 0 } },
+    { "name": "Egg Sandwich", "variants": { "Regular": 0 } },
+    { "name": "Chicken Sandwich", "variants": { "Regular": 0 } },
+    { "name": "Paneer Sandwich", "variants": { "Regular": 0 } }
+  ],
+
+  "Wrap": [
+    { "name": "Veggi Wrap", "variants": { "Regular": 0 } },
+    { "name": "Paneer Wrap", "variants": { "Regular": 0 } },
+    { "name": "Chicken Wrap", "variants": { "Regular": 0 } },
+    { "name": "Masala Chicken Wrap", "variants": { "Regular": 0 } }
+  ],
+
+  "Chicken Items": [
+    { "name": "Butter Chicken Masala", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Tawa Chicken", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Chicken Curry", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Kadai Chicken", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Masala Chicken", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Drum Sticks Fried (5 Pcs)", "variants": { "Plate": 0 } },
+    { "name": "Chicken Chilly", "variants": { "Half": 0, "Full": 0 } }
+  ],
+
+  "Paneer Items": [
+    { "name": "Paneer Butter Masala", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Tawa Paneer", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Paneer Curry", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Kadai Paneer", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Masala Paneer", "variants": { "Half": 0, "Full": 0 } },
+    { "name": "Paneer Chilly", "variants": { "Half": 0, "Full": 0 } }
+  ]
+}
