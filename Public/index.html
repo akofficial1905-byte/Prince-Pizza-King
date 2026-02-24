@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Prince Pizza King — Order Now</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --red:#d90429;
+  --dark:#111;
+  --card:#1c1c1c;
+  --accent:#ffb703;
+  --text:#f8f8f8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#3a0d0d 0,#050505 55%);
+  color:var(--text);
+  font-family:Poppins,sans-serif;
+}
+
+/* HEADER */
+header{
+  padding:14px 16px 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.brand-left{
+  font-size:.65rem;
+  color:#ddd;
+  line-height:1.3;
+}
+.brand-left span{
+  color:var(--accent);
+  font-weight:600;
+}
+.logo{
+  text-align:center;
+  flex:1;
+}
+.logo-line1{
+  font-family:"Playfair Display",serif;
+  font-size:1.2rem;
+  color:#fff;
+  letter-spacing:.08em;
+}
+.logo-line2{
+  font-family:"Playfair Display",serif;
+  font-size:1.5rem;
+  color:var(--red);
+  letter-spacing:.2em;
+}
+.call-right{
+  font-size:.7rem;
+  text-align:right;
+}
+.call-right b{color:var(--accent)}
+
+/* MENU WRAPPER */
+#menuWrapper{
+  padding:6px 12px 90px;
+}
+
+/* CATEGORY TITLE */
+.cat-title{
+  margin:18px 4px 10px;
+  font-size:1.1rem;
+  font-weight:600;
+  color:var(--accent);
+}
+
+/* ITEMS GRID */
+.items-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+@media(min-width:600px){
+  .items-grid{grid-template-columns:repeat(3,1fr);}
+}
+.item{
+  background:var(--card);
+  border-radius:14px;
+  padding:10px;
+  font-size:.78rem;
+  border:1px solid rgba(255,255,255,.08);
+}
+.item b{
+  display:block;
+  font-size:.9rem;
+  margin-bottom:2px;
+}
+.price{
+  font-size:.75rem;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+select{
+  width:100%;
+  padding:7px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.3);
+  font-size:.75rem;
+  margin-bottom:6px;
+  background:#050505;
+  color:var(--text);
+}
+.add{
+  width:100%;
+  padding:7px;
+  border-radius:18px;
+  border:none;
+  background:var(--red);
+  font-weight:600;
+  font-size:.78rem;
+  color:#fff;
+}
+
+/* CART BAR */
+#cartBar{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#000;
+  border-top:2px solid var(--red);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 14px;
+  z-index:40;
+}
+#cartSummary{font-weight:600;font-size:.85rem;}
+#checkoutBtn{
+  background:var(--red);
+  color:#fff;
+  padding:9px 16px;
+  border-radius:22px;
+  font-weight:700;
+  border:none;
+  font-size:.8rem;
+}
+
+/* CART MODAL */
+#cartModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.78);
+  display:none;
+  z-index:50;
+}
+#cartBox{
+  background:#151515;
+  width:94%;
+  max-width:480px;
+  max-height:90vh;
+  margin:20px auto;
+  padding:16px;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  border:1px solid rgba(255,255,255,.25);
+}
+#cartBox h3{
+  margin-top:0;
+  color:var(--accent);
+}
+#cartItems{flex:1;overflow:auto;margin-bottom:10px}
+.cart-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+  font-size:.83rem;
+}
+.cart-row small{color:#ccc}
+.qty button{
+  background:#333;color:#fff;border:none;
+  padding:4px 8px;border-radius:6px;margin:0 4px;
+}
+
+/* FORM */
+input,select.orderType,select.paymentMethod,textarea{
+  width:100%;
+  padding:9px;
+  border-radius:9px;
+  border:1px solid rgba(255,255,255,.3);
+  margin-bottom:7px;
+  font-size:.85rem;
+  background:#050505;
+  color:#fff;
+}
+textarea{resize:vertical;min-height:60px;}
+
+.primary{
+  background:var(--red);
+  border:none;
+  padding:11px;
+  border-radius:26px;
+  font-weight:700;
+  width:100%;
+  color:#fff;
+  font-size:.9rem;
+}
+
+/* Payment / location helper */
+.helper{
+  font-size:.72rem;
+  color:#ccc;
+  margin-bottom:6px;
+}
+
+/* location button */
+.loc-btn{
+  background:#222;
+  color:var(--accent);
+  border:1px solid rgba(255,255,255,.25);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.75rem;
+  margin-bottom:6px;
+}
+
+/* TOAST */
+#toast{
+  position:fixed;
+  bottom:80px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#222;
+  color:var(--accent);
+  padding:8px 16px;
+  border-radius:18px;
+  font-size:.8rem;
+  display:none;
+  z-index:60;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand-left">
+    <div>Powered by <span>Aryvo</span></div>
+    <div>📞 7054699905</div>
+  </div>
+  <div class="logo">
+    <div class="logo-line1">PRINCE</div>
+    <div class="logo-line2">PIZZA KING</div>
+  </div>
+  <div class="call-right">
+    <div>Order Helpline</div>
+    <div><b>+91-XXXXXXXXXX</b></div>
+  </div>
+</header>
+
+<div id="menuWrapper">
+  <div id="menu"></div>
+</div>
+
+<div id="cartBar">
+  <div id="cartSummary">🛒 0 items | ₹0</div>
+  <button id="checkoutBtn">View Cart</button>
+</div>
+
+<div id="cartModal">
+  <div id="cartBox">
+    <h3>Your Order</h3>
+    <div id="cartItems"></div>
+    <b style="font-size:.9rem;">Total: ₹<span id="total">0</span></b>
+
+    <hr style="margin:10px 0;border-color:#333;">
+
+    <select id="orderType" class="orderType">
+      <option value="">Select Order Type</option>
+      <option value="dinein">Dine-in</option>
+      <option value="takeaway">Takeaway</option>
+      <option value="delivery">Delivery</option>
+    </select>
+
+    <input id="regno" placeholder="Registration / Room No. (optional)">
+    <input id="name" placeholder="Customer Name">
+    <input id="mobile" placeholder="Mobile Number">
+
+    <textarea id="address" placeholder="Delivery address / landmark (for delivery)"></textarea>
+
+    <button id="locBtn" class="loc-btn">📍 Use current location</button>
+    <div id="locStatus" class="helper"></div>
+
+    <select id="paymentMethod" class="paymentMethod">
+      <option value="">Select Payment Method</option>
+      <option value="UPI">UPI (Scan QR)</option>
+      <option value="COD">Cash on Delivery</option>
+    </select>
+    <div class="helper">
+      If you choose UPI, you will pay by scanning the QR at the counter or with the delivery person.
+    </div>
+
+    <button class="primary" id="placeOrderBtn">Place Order</button>
+    <button class="primary" style="margin-top:6px;background:#222;color:#fff;border:1px solid rgba(255,255,255,.25);" onclick="closeCart()">Close</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// Basic toast
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.innerText=msg;
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1500);
+}
+
+// MENU + CART
+const menuDiv      = document.getElementById("menu");
+const cartSummary  = document.getElementById("cartSummary");
+const cartModal    = document.getElementById("cartModal");
+const cartItemsDiv = document.getElementById("cartItems");
+const totalSpan    = document.getElementById("total");
+const checkoutBtn  = document.getElementById("checkoutBtn");
+const placeOrderBtn= document.getElementById("placeOrderBtn");
+
+const regInput     = document.getElementById("regno");
+const nameInput    = document.getElementById("name");
+const mobileInput  = document.getElementById("mobile");
+const addressInput = document.getElementById("address");
+const orderTypeSel = document.getElementById("orderType");
+const paymentSel   = document.getElementById("paymentMethod");
+const locBtn       = document.getElementById("locBtn");
+const locStatus    = document.getElementById("locStatus");
+
+let cart = [];
+let menu = {};
+let customerLocation = null; // {lat,lng}
+
+// Load menu.json
+fetch("/menu.json?_=" + Date.now(), { cache:"no-store" })
+  .then(r=>r.json())
+  .then(m=>{
+    menu=m;
+    buildMenu();
+  })
+  .catch(()=>toast("Could not load menu"));
+
+// Build menu UI
+function buildMenu(){
+  menuDiv.innerHTML="";
+  Object.entries(menu).forEach(([cat, items])=>{
+    const catTitle = document.createElement("div");
+    catTitle.className="cat-title";
+    catTitle.textContent=cat;
+    menuDiv.appendChild(catTitle);
+
+    const grid = document.createElement("div");
+    grid.className="items-grid";
+
+    items.forEach(it=>{
+      const inStock = it.available !== false;
+      const min = Math.min(...Object.values(it.variants || {}));
+      let opts = `<option value="">Choose option</option>`;
+      Object.entries(it.variants || {}).forEach(([name,price])=>{
+        opts += `<option value="${price}">${name} — ₹${price}</option>`;
+      });
+
+      const div = document.createElement("div");
+      div.className="item";
+
+      div.innerHTML = `
+        <b>${it.name}</b>
+        <div class="price">From ₹${min}</div>
+        ${
+          inStock
+          ? `<select>${opts}</select>
+             <button class="add">Add</button>`
+          : `<div style="margin-top:6px;font-size:0.8rem;color:#ffb3b3;font-weight:600;">Sold out</div>
+             <select disabled><option>Choose option</option></select>
+             <button class="add" disabled style="background:#444;color:#888;">Sold out</button>`
+        }
+      `;
+
+      if (inStock) {
+        const sel = div.querySelector("select");
+        const btn = div.querySelector("button.add");
+        btn.onclick = () => addToCart(it.name, sel);
+      }
+
+      grid.appendChild(div);
+    });
+
+    menuDiv.appendChild(grid);
+  });
+}
+
+function addToCart(name, sel){
+  if(!sel.value){
+    alert("Please choose an option");
+    return;
+  }
+  const price  = +sel.value;
+  const variant= sel.options[sel.selectedIndex].text.split(" — ")[0];
+
+  let existing = cart.find(i=>i.name===name && i.variant===variant && i.price===price);
+  if(existing) existing.qty++;
+  else cart.push({name,variant,price,qty:1});
+
+  toast(`${name} (${variant}) added`);
+  updateCart();
+}
+
+function updateCart(){
+  cartItemsDiv.innerHTML="";
+  let total=0;
+  cart.forEach((i,idx)=>{
+    total+=i.qty*i.price;
+    cartItemsDiv.innerHTML += `
+      <div class="cart-row">
+        <div>
+          ${i.name} <small>(${i.variant})</small><br>
+          ₹${i.price}
+        </div>
+        <div class="qty">
+          <button onclick="changeQty(${idx},-1)">−</button>
+          ${i.qty}
+          <button onclick="changeQty(${idx},1)">+</button>
+        </div>
+      </div>
+    `;
+  });
+  totalSpan.textContent = total;
+  const itemsCount = cart.reduce((s,i)=>s+i.qty,0);
+  cartSummary.textContent = `🛒 ${itemsCount} items | ₹${total}`;
+}
+
+function changeQty(i,d){
+  cart[i].qty += d;
+  if(cart[i].qty<=0) cart.splice(i,1);
+  updateCart();
+}
+
+// Cart open/close
+checkoutBtn.onclick = () => {
+  if(cart.length===0){
+    toast("Cart is empty");
+    return;
+  }
+  cartModal.style.display="block";
+};
+function closeCart(){ cartModal.style.display="none"; }
+
+// Location button
+locBtn.onclick = () => {
+  if(!navigator.geolocation){
+    locStatus.textContent = "Geolocation not supported on this device.";
+    return;
+  }
+  locStatus.textContent = "Getting your location…";
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      customerLocation = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
+      locStatus.textContent = "Location captured ✔";
+    },
+    err => {
+      console.error(err);
+      locStatus.textContent = "Could not get location. Please type address.";
+    },
+    { enableHighAccuracy:true, timeout:10000 }
+  );
+};
+
+// Place order (no Razorpay)
+let submitting = false;
+placeOrderBtn.onclick = async () => {
+  if(submitting) return;
+  if(cart.length===0) return alert("Cart is empty");
+
+  const orderType = orderTypeSel.value;
+  if(!orderType) return alert("Select order type");
+  if(!nameInput.value.trim()) return alert("Enter your name");
+  if(!mobileInput.value.trim()) return alert("Enter mobile number");
+
+  // For delivery, recommend address
+  if(orderType === "delivery" && !addressInput.value.trim()){
+    return alert("Enter delivery address / hostel / block");
+  }
+
+  const paymentMethod = paymentSel.value;
+  if(!paymentMethod) return alert("Select payment method (UPI or COD)");
+
+  const totalAmount = cart.reduce((s,i)=>s + i.qty*i.price,0);
+
+  const payload = {
+    orderType,
+    customerName: nameInput.value.trim(),
+    registrationNumber: regInput.value.trim(),
+    mobile: mobileInput.value.trim(),
+    tableNumber: orderType === "dinein" ? (regInput.value.trim() || "") : "",
+    address: addressInput.value.trim(),
+    location: customerLocation,          // {lat,lng} or null
+    items: cart,
+    paymentMethod
+  };
+
+  submitting = true;
+  placeOrderBtn.textContent = "Placing order…";
+
+  try{
+    const res = await fetch("/api/orders",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok){
+      alert("Could not place order. Please try again.");
+      submitting=false;
+      placeOrderBtn.textContent="Place Order";
+      return;
+    }
+    const data = await res.json();
+    if(!data.success){
+      alert("Order failed. Please try again.");
+      submitting=false;
+      placeOrderBtn.textContent="Place Order";
+      return;
+    }
+
+    // success
+    submitting=false;
+    placeOrderBtn.textContent="Place Order";
+    showSuccessAndReset(totalAmount, paymentMethod);
+  }catch(e){
+    console.error(e);
+    alert("Server error. Please try again.");
+    submitting=false;
+    placeOrderBtn.textContent="Place Order";
+  }
+};
+
+// Simple success overlay
+function showSuccessAndReset(total, paymentMethod){
+  const overlay=document.createElement("div");
+  overlay.style.position="fixed";
+  overlay.style.inset="0";
+  overlay.style.background="rgba(0,0,0,0.88)";
+  overlay.style.display="flex";
+  overlay.style.alignItems="center";
+  overlay.style.justifyContent="center";
+  overlay.style.zIndex="100";
+
+  overlay.innerHTML=`
+    <div style="
+      background:#171717;
+      padding:18px;
+      border-radius:18px;
+      width:88%;
+      max-width:360px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,.35);
+      font-family:Poppins,sans-serif;
+      color:#f5f5f5;
+    ">
+      <h3 style="margin-top:0;color:var(--accent);">Order placed</h3>
+      <p style="font-size:.9rem;margin:8px 0 10px;">
+        Your order has been sent to Prince Pizza King.
+      </p>
+      <div style="font-weight:600;margin-bottom:6px;">
+        Bill Amount: ₹${total}
+      </div>
+      <div style="font-size:.83rem;margin-bottom:12px;">
+        Payment method: <b>${paymentMethod}</b>
+      </div>
+      <button id="successDoneBtn" style="
+        background:var(--red);
+        border:none;
+        padding:9px 16px;
+        border-radius:22px;
+        font-weight:700;
+        color:#fff;
+        width:100%;
+        font-size:.9rem;
+      ">
+        Done
+      </button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById("successDoneBtn").onclick=()=>{
+    document.body.removeChild(overlay);
+    cart=[];
+    updateCart();
+    closeCart();
+    // reset fields
+    orderTypeSel.value="";
+    regInput.value="";
+    nameInput.value="";
+    mobileInput.value="";
+    addressInput.value="";
+    paymentSel.value="";
+    customerLocation=null;
+    locStatus.textContent="";
+  };
+}
+</script>
+
+</body>
+</html>
+
