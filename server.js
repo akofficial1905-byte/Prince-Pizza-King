@@ -83,7 +83,19 @@ async function saveAndBroadcastOrder(orderData) {
 
 app.use(cors());
 app.use(express.json());
+
+// serve static assets (index.html, JS, CSS, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ROOT ROUTE – serve customer ordering page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// (optional) manager portal page if you have a separate HTML file
+// app.get('/manager', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'manager.html'));
+// });
 
 // --- Manager Login API ---
 app.post("/api/manager/login", (req, res) => {
@@ -171,7 +183,6 @@ app.get('/api/orders', async (req, res) => {
 });
 
 // Place new order (QR / COD – NO Razorpay)
-// Client must send: orderType, customerName, registrationNumber, mobile, tableNumber, address, location, items, paymentMethod
 app.post('/api/orders', async (req, res) => {
   try {
     const {
@@ -213,8 +224,7 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 
-// Update order status (manager or delivery portal)
-// e.g. { status: 'delivered' } or { status: 'out_for_delivery' }
+// Update order status
 app.patch('/api/orders/:id/status', async (req, res) => {
   try {
     const { id }    = req.params;
@@ -238,8 +248,7 @@ app.patch('/api/orders/:id/status', async (req, res) => {
   }
 });
 
-// Toggle payment verification (for manager & delivery portals)
-// body: { paymentVerified: true/false }
+// Toggle payment verification
 app.patch('/api/orders/:id/payment-verified', async (req, res) => {
   try {
     const { id } = req.params;
@@ -255,7 +264,6 @@ app.patch('/api/orders/:id/payment-verified', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Order not found' });
     }
 
-    // broadcast change so manager & delivery portals stay in sync
     io.emit('orderUpdated', order);
     res.json({ success: true, order });
   } catch (err) {
@@ -264,7 +272,7 @@ app.patch('/api/orders/:id/payment-verified', async (req, res) => {
   }
 });
 
-// Hard delete (if needed) – optional
+// Hard delete
 app.delete('/api/orders/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -278,7 +286,6 @@ app.delete('/api/orders/:id', async (req, res) => {
 
 // ---------------- DASHBOARD APIs ----------------
 
-// Total sales for a day/week/month (IST based)
 app.get('/api/dashboard/sales', async (req, res) => {
   try {
     const period = req.query.period || 'day';
@@ -312,7 +319,6 @@ app.get('/api/dashboard/sales', async (req, res) => {
   }
 });
 
-// Peak Hour (IST)
 app.get('/api/dashboard/peakhour', async (req, res) => {
   try {
     const date = req.query.date || new Date().toISOString().slice(0, 10);
@@ -340,7 +346,6 @@ app.get('/api/dashboard/peakhour', async (req, res) => {
   }
 });
 
-// Most Ordered Dish (IST)
 app.get('/api/dashboard/topdish', async (req, res) => {
   try {
     let start, end;
@@ -374,7 +379,6 @@ app.get('/api/dashboard/topdish', async (req, res) => {
   }
 });
 
-// Repeat Customers (IST)
 app.get('/api/dashboard/repeatcustomers', async (req, res) => {
   try {
     let start, end;
@@ -458,4 +462,3 @@ app.get('/health', (req, res) => {
 server.listen(PORT, () => {
   console.log(`🚀 Prince Pizza King Server running on http://localhost:${PORT}`);
 });
-
