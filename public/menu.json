@@ -1,9 +1,9 @@
 {
   "Veg Pizza": [
-    { "name": "Margarita", "variants": { "S": 0, "M": 0, "L": 0 } },
-    { "name": "Capsicum", "variants": { "S": 0, "M": 0, "L": 0 } },
-    { "name": "Tomato", "variants": { "S": 0, "M": 0, "L": 0 } },
-    { "name": "Onion", "variants": { "S": 0, "M": 0, "L": 0 } },
+    { "name": "Margarita", "variants": { "S": 0, "M": 0, "L": 0 },"image":"/Margherita.jpg" },
+    { "name": "Capsicum", "variants": { "S": 0, "M": 0, "L": 0 },"image":"/capsicum.jpg" },
+    { "name": "Tomato", "variants": { "S": 0, "M": 0, "L": 0 },"image":"/Tomato.jpg" },
+    { "name": "Onion", "variants": { "S": 0, "M": 0, "L": 0 },"image":"/onion.jpg" },
     { "name": "Corn", "variants": { "S": 0, "M": 0, "L": 0 } },
     { "name": "Paradise Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
     { "name": "Filling Pizza", "variants": { "S": 0, "M": 0, "L": 0 } },
