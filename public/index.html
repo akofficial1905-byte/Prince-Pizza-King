@@ -281,6 +281,32 @@ textarea#address{resize:vertical;min-height:60px;}
   font-size:.75rem;
   z-index:70;
 }
+
+/* UPI QR OVERLAY */
+#upiOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:80;
+}
+#upiBox{
+  background:#151515;
+  padding:18px;
+  border-radius:18px;
+  width:90%;
+  max-width:360px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;
+  font-family:Poppins,sans-serif;
+}
+#upiBox h3{
+  margin-top:0;
+  color:var(--accent-soft);
+}
 </style>
 </head>
 
@@ -318,7 +344,7 @@ textarea#address{resize:vertical;min-height:60px;}
 
     <textarea id="address" placeholder="Delivery address / landmark (for delivery)"></textarea>
 
-    <button id="locBtn" class="loc-btn">📍 Use current location</button>
+    <button id="locBtn" class="loc-btn">📍 Use current location (for delivery)</button>
     <div id="locStatus" class="helper"></div>
 
     <select id="paymentMethod">
@@ -327,11 +353,36 @@ textarea#address{resize:vertical;min-height:60px;}
       <option value="COD">Cash on Delivery</option>
     </select>
     <div class="helper">
-      If you choose UPI, you will pay by scanning the QR at the counter or with the delivery person.
+      If you choose UPI, please scan the QR and pay before placing the order.
     </div>
 
     <button class="primary" id="placeOrderBtn">Place Order</button>
     <button class="primary" style="margin-top:6px;background:#222;color:#fff;border:1px solid rgba(255,255,255,.25);" onclick="closeCart()">Close</button>
+  </div>
+</div>
+
+<!-- UPI QR overlay -->
+<div id="upiOverlay">
+  <div id="upiBox">
+    <h3>Pay using UPI</h3>
+    <p style="font-size:0.85rem;margin:4px 0 10px;">
+      Scan this QR and pay the bill amount to<br>
+      <b>7054699905@ptaxis</b>
+    </p>
+    <!-- Simple text QR stand-in; you can replace with actual QR image later -->
+    <div style="
+      width:200px;height:200px;margin:0 auto 10px;
+      background:#000;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:12px;border:1px solid #444;
+      font-size:0.75rem;color:#fff;
+    ">
+      UPI ID: 7054699905@ptaxis
+    </div>
+    <button id="upiPaidBtn" class="primary" style="margin-top:6px;">I have paid</button>
+    <button id="upiCancelBtn" class="primary" style="margin-top:6px;background:#222;border:1px solid rgba(255,255,255,.3);">
+      Cancel
+    </button>
   </div>
 </div>
 
@@ -358,8 +409,13 @@ const paymentSel=document.getElementById("paymentMethod");
 const locBtn=document.getElementById("locBtn");
 const locStatus=document.getElementById("locStatus");
 
+const upiOverlay=document.getElementById("upiOverlay");
+const upiPaidBtn=document.getElementById("upiPaidBtn");
+const upiCancelBtn=document.getElementById("upiCancelBtn");
+
 let cart=[],page=0,locked=false,menu={};
 let customerLocation=null;
+let pendingOrderPayload=null; // for UPI flow
 
 /* NAV */
 function go(i){
@@ -602,6 +658,11 @@ function chg(i,d){
 
 /* LOCATION */
 locBtn.onclick = () => {
+  const orderType = orderTypeSel.value;
+  if(orderType !== "delivery"){
+    locStatus.textContent = "Location is only used for delivery orders.";
+    return;
+  }
   if(!navigator.geolocation){
     locStatus.textContent = "Geolocation not supported on this device.";
     return;
@@ -613,7 +674,7 @@ locBtn.onclick = () => {
         lat: pos.coords.latitude,
         lng: pos.coords.longitude
       };
-      locStatus.textContent = "Location captured ✔";
+      locStatus.textContent = "Location captured ✔ (only used for delivery)";
     },
     err => {
       console.error(err);
@@ -624,7 +685,7 @@ locBtn.onclick = () => {
 };
 
 /* SIMPLE SUCCESS OVERLAY */
-function showSuccessAndReset(total, paymentMethod){
+function showSuccessAndReset(mainMsg, extraMsg, total, paymentMethod){
   const overlay=document.createElement("div");
   overlay.style.position="fixed";
   overlay.style.inset="0";
@@ -647,15 +708,14 @@ function showSuccessAndReset(total, paymentMethod){
       color:#f5f5f5;
     ">
       <h3 style="margin-top:0;color:var(--accent-soft);">Order placed</h3>
-      <p style="font-size:.9rem;margin:8px 0 10px;">
-        Your order has been sent to Prince Pizza King.
-      </p>
+      <p style="font-size:.9rem;margin:8px 0 10px;">${mainMsg}</p>
       <div style="font-weight:600;margin-bottom:6px;">
         Bill Amount: ₹${total}
       </div>
-      <div style="font-size:.83rem;margin-bottom:12px;">
+      <div style="font-size:.83rem;margin-bottom:10px;">
         Payment method: <b>${paymentMethod}</b>
       </div>
+      ${extraMsg ? `<div style="font-size:0.78rem;margin-bottom:12px;color:#ffd89c;">${extraMsg}</div>` : ``}
       <button id="successDoneBtn" style="
         background:var(--accent);
         border:none;
@@ -688,7 +748,70 @@ function showSuccessAndReset(total, paymentMethod){
   };
 }
 
-/* PLACE ORDER (no Razorpay, use /api/orders of Prince Pizza King server) */
+/* PLACE ORDER helper */
+async function actuallyPlaceOrder(payload, totalAmount, paymentMethod){
+  try{
+    const res = await fetch("/api/orders",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok){
+      alert("Could not place order. Please try again.");
+      return;
+    }
+    const data = await res.json();
+    if(!data.success){
+      alert("Order failed. Please try again.");
+      return;
+    }
+
+    if(paymentMethod === "UPI"){
+      showSuccessAndReset(
+        "Your order has been sent to Prince Pizza King.",
+        "",
+        totalAmount,
+        paymentMethod
+      );
+    }else{
+      showSuccessAndReset(
+        "Your order has been sent to Prince Pizza King.",
+        "Don’t have change? Pay using UPI: <b>7054699905@ptaxis</b>, else pay to the delivery boy at the time of delivery.",
+        totalAmount,
+        paymentMethod
+      );
+    }
+  }catch(e){
+    console.error(e);
+    alert("Server error. Please try again.");
+  }
+}
+
+/* UPI overlay buttons */
+upiPaidBtn.onclick = async () => {
+  if(!pendingOrderPayload) {
+    upiOverlay.style.display="none";
+    return;
+  }
+  const payload = pendingOrderPayload.payload;
+  const totalAmount = pendingOrderPayload.total;
+  const paymentMethod = pendingOrderPayload.paymentMethod;
+  pendingOrderPayload = null;
+  upiOverlay.style.display="none";
+
+  placeOrderBtn.innerText="Placing order…";
+  placeOrderBtn.disabled=true;
+  await actuallyPlaceOrder(payload, totalAmount, paymentMethod);
+  placeOrderBtn.innerText="Place Order";
+  placeOrderBtn.disabled=false;
+};
+
+upiCancelBtn.onclick = () => {
+  pendingOrderPayload = null;
+  upiOverlay.style.display="none";
+};
+
+/* PLACE ORDER main */
 let submitting=false;
 placeOrderBtn.onclick = async () => {
   if(submitting)return;
@@ -699,6 +822,7 @@ placeOrderBtn.onclick = async () => {
   if(!nameInput.value.trim()) return alert("Enter name");
   if(!mobileInput.value.trim()) return alert("Enter mobile");
 
+  // Address mandatory only for delivery
   if(orderType === "delivery" && !addressInput.value.trim()){
     return alert("Enter delivery address / hostel / block");
   }
@@ -715,42 +839,31 @@ placeOrderBtn.onclick = async () => {
     mobile:mobileInput.value.trim(),
     tableNumber: orderType==="dinein" ? (regInput.value.trim() || "") : "",
     address:addressInput.value.trim(),
-    location:customerLocation,
+    location: orderType==="delivery" ? customerLocation : null,
     items:cart,
     paymentMethod
   };
 
+  if(paymentMethod === "UPI"){
+    // Show UPI QR first, only place order after user confirms payment
+    pendingOrderPayload = {
+      payload,
+      total: totalAmount,
+      paymentMethod
+    };
+    upiOverlay.style.display="flex";
+    return;
+  }
+
   submitting=true;
   placeOrderBtn.innerText="Placing order…";
+  placeOrderBtn.disabled=true;
 
-  try{
-    const res = await fetch("/api/orders",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload)
-    });
-    if(!res.ok){
-      alert("Could not place order. Please try again.");
-      submitting=false;
-      placeOrderBtn.innerText="Place Order";
-      return;
-    }
-    const data = await res.json();
-    if(!data.success){
-      alert("Order failed. Please try again.");
-      submitting=false;
-      placeOrderBtn.innerText="Place Order";
-      return;
-    }
-    submitting=false;
-    placeOrderBtn.innerText="Place Order";
-    showSuccessAndReset(totalAmount, paymentMethod);
-  }catch(e){
-    console.error(e);
-    alert("Server error. Please try again.");
-    submitting=false;
-    placeOrderBtn.innerText="Place Order";
-  }
+  await actuallyPlaceOrder(payload, totalAmount, paymentMethod);
+
+  submitting=false;
+  placeOrderBtn.innerText="Place Order";
+  placeOrderBtn.disabled=false;
 };
 </script>
 
