@@ -205,55 +205,18 @@ select{
   color:var(--accent-soft);
 }
 #cartItems{
-  max-height:260px;
+  flex:1;
   overflow:auto;
   margin-bottom:10px;
 }
-
-/* compact cart rows */
 .cart-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:6px;
-  font-size:.8rem;
-  gap:8px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;font-size:.85rem;
 }
-.cart-row-main{
-  display:flex;
-  flex-direction:column;
-}
-.cart-row-main-line{
-  display:flex;
-  align-items:center;
-  gap:4px;
-  white-space:nowrap;
-}
-.cart-name{
-  max-width:150px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.cart-variant{
-  font-size:.75rem;
-  color:#ccc;
-}
-.cart-price{
-  font-size:.75rem;
-  color:var(--accent-soft);
-}
-.qty{
-  display:flex;
-  align-items:center;
-  gap:4px;
-  font-size:.8rem;
-}
+.cart-row small{color:#ccc}
 .qty button{
-  background:#333;
-  color:#fff;
-  border:none;
-  padding:3px 8px;
-  border-radius:999px;
+  background:#333;color:#fff;border:none;
+  padding:4px 8px;border-radius:6px;margin:0 4px;
 }
 
 /* INPUTS */
@@ -368,7 +331,6 @@ textarea#address{resize:vertical;min-height:60px;}
   <div id="cartBox">
     <h3>Your Order</h3>
     <div id="cartItems"></div>
-    <hr style="border-color:#333;margin:6px 0 8px;">
     <b>Total: ₹<span id="total">0</span></b>
 
     <hr style="margin:10px 0;border-color:#333;">
@@ -676,7 +638,7 @@ function build(){
   }
 }
 
-/* CART LOGIC */
+/* CART LOGIC – SAME LAYOUT AS MILITARY HOTEL */
 function add(name,btn){
   const sel=btn.previousElementSibling;
   if(!sel.value){alert("Please choose an option");return;}
@@ -698,16 +660,13 @@ function updateCart(){
     total+=i.qty*i.price;
     cartItemsDiv.innerHTML+=`
     <div class="cart-row">
-      <div class="cart-row-main">
-        <div class="cart-row-main-line">
-          <span class="cart-name">${i.name}</span>
-          <span class="cart-variant">(${i.variant})</span>
-        </div>
-        <span class="cart-price">₹${i.price}</span>
+      <div>
+        ${i.name} <small>(${i.variant})</small><br>
+        ₹${i.price}
       </div>
       <div class="qty">
         <button onclick="chg(${idx},-1)">−</button>
-        <span>${i.qty}</span>
+        ${i.qty}
         <button onclick="chg(${idx},1)">+</button>
       </div>
     </div>`;
@@ -831,21 +790,14 @@ async function actuallyPlaceOrder(payload, totalAmount, paymentMethod){
       return;
     }
 
-    if(paymentMethod === "UPI"){
-      showSuccessAndReset(
-        "Your order has been sent to Prince Pizza King.",
-        "",
-        totalAmount,
-        paymentMethod
-      );
-    }else{
-      showSuccessAndReset(
-        "Your order has been sent to Prince Pizza King.",
-        "Don’t have change? Pay using UPI: <b>7054699905@ptaxis</b>, else pay to the delivery boy at the time of delivery.",
-        totalAmount,
-        paymentMethod
-      );
-    }
+    showSuccessAndReset(
+      "Your order has been sent to Prince Pizza King.",
+      paymentMethod === "UPI"
+        ? ""
+        : "Don’t have change? Pay using UPI: <b>7054699905@ptaxis</b>, else pay to the delivery boy at the time of delivery.",
+      totalAmount,
+      paymentMethod
+    );
   }catch(e){
     console.error(e);
     alert("Server error. Please try again.");
