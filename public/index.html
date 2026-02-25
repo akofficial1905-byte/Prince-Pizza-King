@@ -421,7 +421,7 @@ const upiUrl = encodeURIComponent(
   "upi://pay?pa=7054699905@ptaxis&pn=Prince%20Pizza%20King"
 );
 upiQrImg.src =
-  "https://chart.googleapis.com/chart?cht=qr&chs=260x260&chl=" + upiUrl;  /* Google Charts QR */ [web:1236]
+  "https://chart.googleapis.com/chart?cht=qr&chs=260x260&chl=" + upiUrl;
 
 /* NAV */
 function go(i){
@@ -868,6 +868,9 @@ placeOrderBtn.onclick = async () => {
   placeOrderBtn.innerText="Place Order";
   placeOrderBtn.disabled=false;
 };
+
+/* BUILD INITIAL PAGES ON LOAD (important) */
+build();
 </script>
 
 </body>
