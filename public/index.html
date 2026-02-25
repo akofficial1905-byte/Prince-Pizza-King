@@ -204,19 +204,28 @@ select{
   margin-top:0;
   color:var(--accent-soft);
 }
+
+/* items block – always visible, no inner scroll */
 #cartItems{
-  flex:1;
-  overflow:auto;
   margin-bottom:10px;
+  max-height:none;
+  overflow:visible;
 }
 .cart-row{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:8px;font-size:.85rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+  font-size:.85rem;
 }
 .cart-row small{color:#ccc}
 .qty button{
-  background:#333;color:#fff;border:none;
-  padding:4px 8px;border-radius:6px;margin:0 4px;
+  background:#333;
+  color:#fff;
+  border:none;
+  padding:4px 8px;
+  border-radius:6px;
+  margin:0 4px;
 }
 
 /* INPUTS */
@@ -333,7 +342,7 @@ textarea#address{resize:vertical;min-height:60px;}
     <div id="cartItems"></div>
     <b>Total: ₹<span id="total">0</span></b>
 
-    <hr style="margin:10px 0;border-color:#333;">
+    <hr style="margin:8px 0;border-color:#333;">
 
     <select id="orderType">
       <option value="">Select Order Type</option>
@@ -425,7 +434,6 @@ function setUpiQr(totalAmount){
   const upiId   = "7054699905@ptaxis";
   const upiName = "Prince Pizza King";
   const note    = "Prince Pizza order";
-
   const amountStr = totalAmount.toFixed(2);
 
   const upiLink =
@@ -638,7 +646,7 @@ function build(){
   }
 }
 
-/* CART LOGIC – SAME LAYOUT AS MILITARY HOTEL */
+/* CART LOGIC – visible items like Military Hotel */
 function add(name,btn){
   const sel=btn.previousElementSibling;
   if(!sel.value){alert("Please choose an option");return;}
