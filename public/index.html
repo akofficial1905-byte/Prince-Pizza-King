@@ -416,12 +416,27 @@ let cart=[],page=0,locked=false,menu={};
 let customerLocation=null;
 let pendingOrderPayload=null;
 
-/* Static UPI QR for your ID */
-const upiUrl = encodeURIComponent(
-  "upi://pay?pa=7054699905@ptaxis&pn=Prince%20Pizza%20King"
-);
-upiQrImg.src =
-  "https://chart.googleapis.com/chart?cht=qr&chs=260x260&chl=" + upiUrl;
+/* Build UPI QR with amount (uses same service as Mughlai) */
+function setUpiQr(totalAmount){
+  const upiId   = "7054699905@ptaxis";
+  const upiName = "Prince Pizza King";
+  const note    = "Prince Pizza order";
+
+  const amountStr = totalAmount.toFixed(2); // "250.00"
+
+  const upiLink =
+    `upi://pay?pa=${encodeURIComponent(upiId)}` +
+    `&pn=${encodeURIComponent(upiName)}` +
+    `&am=${encodeURIComponent(amountStr)}` +
+    `&cu=INR` +
+    `&tn=${encodeURIComponent(note)}`;
+
+  const qrApi =
+    "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=" +
+    encodeURIComponent(upiLink);
+
+  upiQrImg.src = qrApi;
+}
 
 /* NAV */
 function go(i){
@@ -854,6 +869,7 @@ placeOrderBtn.onclick = async () => {
       total: totalAmount,
       paymentMethod
     };
+    setUpiQr(totalAmount);   // generate QR with amount
     upiOverlay.style.display="flex";
     return;
   }
@@ -869,7 +885,7 @@ placeOrderBtn.onclick = async () => {
   placeOrderBtn.disabled=false;
 };
 
-/* BUILD INITIAL PAGES ON LOAD (important) */
+/* BUILD INITIAL PAGES ON LOAD */
 build();
 </script>
 
