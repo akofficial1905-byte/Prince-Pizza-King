@@ -369,7 +369,6 @@ textarea#address{resize:vertical;min-height:60px;}
       Scan this QR and pay the bill amount to<br>
       <b>7054699905@ptaxis</b>
     </p>
-    <!-- Simple text QR stand-in; you can replace with actual QR image later -->
     <div style="
       width:200px;height:200px;margin:0 auto 10px;
       background:#000;
@@ -415,7 +414,7 @@ const upiCancelBtn=document.getElementById("upiCancelBtn");
 
 let cart=[],page=0,locked=false,menu={};
 let customerLocation=null;
-let pendingOrderPayload=null; // for UPI flow
+let pendingOrderPayload=null;
 
 /* NAV */
 function go(i){
@@ -464,7 +463,7 @@ fetch("/menu.json?_=" + Date.now(), { cache: "no-store" })
 function build(){
   book.innerHTML="";
 
-  /* FIRST PAGE – PRINCE PIZZA KING COVER */
+  /* FIRST PAGE – COVER */
   book.innerHTML+=`
   <section class="page">
     <div style="
@@ -564,7 +563,6 @@ function build(){
   /* CATEGORY PAGES */
   let pg=3;
   for (let [cat, items] of Object.entries(menu)) {
-
     const hasImages = items.some(it => it.image);
     const perPage   = hasImages
       ? (window.innerWidth < 500 ? 4 : 6)
@@ -684,7 +682,7 @@ locBtn.onclick = () => {
   );
 };
 
-/* SIMPLE SUCCESS OVERLAY */
+/* SUCCESS OVERLAY */
 function showSuccessAndReset(mainMsg, extraMsg, total, paymentMethod){
   const overlay=document.createElement("div");
   overlay.style.position="fixed";
@@ -845,7 +843,6 @@ placeOrderBtn.onclick = async () => {
   };
 
   if(paymentMethod === "UPI"){
-    // Show UPI QR first, only place order after user confirms payment
     pendingOrderPayload = {
       payload,
       total: totalAmount,
