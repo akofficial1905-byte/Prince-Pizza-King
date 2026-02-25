@@ -204,7 +204,11 @@ select{
   margin-top:0;
   color:var(--accent-soft);
 }
-#cartItems{flex:1;overflow:auto;margin-bottom:10px}
+#cartItems{
+  max-height:220px;
+  overflow:auto;
+  margin-bottom:10px;
+}
 .cart-row{
   display:flex;justify-content:space-between;align-items:center;
   margin-bottom:8px;font-size:.85rem;
@@ -327,6 +331,7 @@ textarea#address{resize:vertical;min-height:60px;}
   <div id="cartBox">
     <h3>Your Order</h3>
     <div id="cartItems"></div>
+    <hr style="border-color:#333;margin:6px 0 8px;">
     <b>Total: ₹<span id="total">0</span></b>
 
     <hr style="margin:10px 0;border-color:#333;">
@@ -416,13 +421,13 @@ let cart=[],page=0,locked=false,menu={};
 let customerLocation=null;
 let pendingOrderPayload=null;
 
-/* Build UPI QR with amount (uses same service as Mughlai) */
+/* Build UPI QR with amount */
 function setUpiQr(totalAmount){
   const upiId   = "7054699905@ptaxis";
   const upiName = "Prince Pizza King";
   const note    = "Prince Pizza order";
 
-  const amountStr = totalAmount.toFixed(2); // "250.00"
+  const amountStr = totalAmount.toFixed(2);
 
   const upiLink =
     `upi://pay?pa=${encodeURIComponent(upiId)}` +
@@ -869,7 +874,7 @@ placeOrderBtn.onclick = async () => {
       total: totalAmount,
       paymentMethod
     };
-    setUpiQr(totalAmount);   // generate QR with amount
+    setUpiQr(totalAmount);
     upiOverlay.style.display="flex";
     return;
   }
@@ -887,6 +892,7 @@ placeOrderBtn.onclick = async () => {
 
 /* BUILD INITIAL PAGES ON LOAD */
 build();
+updateCart();
 </script>
 
 </body>
